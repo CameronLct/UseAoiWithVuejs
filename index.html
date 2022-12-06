@@ -11,11 +11,16 @@
     <div id="app" class="container">
         <h1 class="title">Les épisodes de One Piece !</h1>
 
-        <label for="search">Rechercher un épisode</label>
-        <input id="search" type="search" v-model="searchString">
-        <button>Rechercher</button>
+        <div class="searchlabel">
+            <label for="search">Rechercher un épisode</label>
 
-        <div class="card" v-for="episode in episodes">
+            <div class="search">
+                <input id="search" type="search" v-model="searchString">
+                <button>Rechercher</button>
+            </div>
+        </div>
+
+        <div class="card" v-for="episode in filteredEpisodes">
             <p>Number : {{episode.number}}</p>
             <p>Title : {{episode.title}}</p>
             <p>Descritpion : {{episode.description}}</p>
@@ -61,7 +66,7 @@
             },
 
             computed: {
-                filteredArticles: function () {
+                filteredEpisodes: function () {
                     var episodes_array = this.episodes,
                     searchString = this.searchString;
 
