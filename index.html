@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Les épisodes de One Piece !</h1>
+        <div>
+            <p>Number : {{episodes[0].number}}</p>
+            <p>Title : {{episodes[0].title}}</p>
+            <p>Descritpion : {{episodes[0].description}}</p>
+            <p>Chapitre : {{episodes[0].chapter}}</p>
+            <p>Saga : {{episodes[0].saga.saga_title}}</p>
+            <p>Arc : {{episodes[0].arc.arc_title}}</p>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/vue@3"></script>
+
+	<script>
+		const apiURL = "https://api.api-onepiece.com/episodes";
+		const config = {};
+
+        Vue.createApp({
+			data() {
+			    return {
+                    episodes: null
+				};
+			},
+
+			created: function () {
+				this.fetchDataPromise();
+			},
+
+            methods: {
+                fetchDataPromise: function () {
+					const self = this;
+					axios
+						.get(apiURL)
+						.then(function (response) {
+							console.log(response.data);
+							self.episodes = response.data;
+						})
+						.catch(function (error) {
+					    	console.log(error);
+						});
+				},
+            }
+        }).mount("#app")
+    </script>
+</body>
+</html>
