@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    <div id="app">
-        <h1>Les épisodes de One Piece !</h1>
-        <div>
-            <p>Number : {{episodes[0].number}}</p>
-            <p>Title : {{episodes[0].title}}</p>
-            <p>Descritpion : {{episodes[0].description}}</p>
-            <p>Chapitre : {{episodes[0].chapter}}</p>
-            <p>Saga : {{episodes[0].saga.saga_title}}</p>
-            <p>Arc : {{episodes[0].arc.arc_title}}</p>
+    <div id="app" class="container">
+        <h1 class="title">Les épisodes de One Piece !</h1>
+
+        <label for="search">Rechercher un épisode</label>
+        <input id="search" type="search" v-model="searchString">
+        <button>Rechercher</button>
+
+        <div class="card" v-for="episode in episodes">
+            <p>Number : {{episode.number}}</p>
+            <p>Title : {{episode.title}}</p>
+            <p>Descritpion : {{episode.description}}</p>
+            <p>Chapitre : {{episode.chapter}}</p>
+            <!-- <p>Saga : {{episode.saga.saga_title}}</p>
+            <p>Arc : {{episode.arc.arc_title}}</p> -->
         </div>
     </div>
 
@@ -30,7 +36,8 @@
         Vue.createApp({
 			data() {
 			    return {
-                    episodes: null
+                    episodes: null,
+                    searchString: "",
 				};
 			},
 
@@ -51,7 +58,32 @@
 					    	console.log(error);
 						});
 				},
-            }
+            },
+
+            computed: {
+                filteredArticles: function () {
+                    var episodes_array = this.episodes,
+                    searchString = this.searchString;
+
+                    if (!searchString) {
+                        return episodes_array;
+                    }
+
+                    searchString = searchString.trim().toLowerCase();
+
+                    episodes_array = episodes_array.filter(function (item) {
+                        if (
+                            item.title
+                                .toLowerCase()
+                                .indexOf(searchString) !== -1
+                            ) {
+                                return item;
+                            }
+                    });
+
+                    return episodes_array;
+                },
+            },
         }).mount("#app")
     </script>
 </body>
